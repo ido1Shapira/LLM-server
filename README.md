@@ -46,15 +46,15 @@ import httpx
 print(httpx.get(base_url + 'model/', headers=header).text)
 
 ```
-2. `generate/` - generate llm response.
+2. `invoke/` - invoke llm response.
 
 ```python
 import httpx
-generate_url = base_url + 'generate/'
-print(httpx.post(generate_url, json=params, headers=header).text)
+invoke_url = base_url + 'invoke/'
+print(httpx.post(invoke_url, json=params, headers=header).text)
 ```
 
-3. `stream/` - stream the generated llm response.
+3. `stream/` - stream the llm response.
 ```python
 import httpx
 stream_url = base_url + 'stream/'

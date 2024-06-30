@@ -24,10 +24,10 @@ verbose = bool(config.get('ModelParams', 'verbose'))
 llm = load_model(path=model_path, kwargs={'verbose': verbose})
 
 
-@app.post("/generate/")
-async def generate(request: ModelRequest):
+@app.post("/invoke/")
+async def invoke(request: ModelRequest):
     """
-    Generate a response from the LLM model.
+    Invoke a response from the LLM model.
 
     Parameters:
     request (ModelRequest): The request parameters.
