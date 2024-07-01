@@ -15,6 +15,8 @@ Note: Make sure to replace the `base_url` variable with the actual base URL of t
 
 import httpx
 
+timeout = 60.0
+
 # Define the request headers
 header = {
     "Content-Type": "application/json"
@@ -38,9 +40,9 @@ stream_url = base_url + 'stream/'
 print(httpx.get(base_url + 'model/', headers=header).text)
 
 # Send a POST request to the invoke endpoint
-print(httpx.post(invoke_url, json=params, headers=header).text)
+print(httpx.post(invoke_url, json=params, headers=header, timeout=timeout).text)
 
 # Send a POST request to the stream endpoint and print the streamed response
-with httpx.stream('POST', stream_url, json=params, headers=header) as r:
+with httpx.stream('POST', stream_url, json=params, headers=header, timeout=timeout) as r:
     for chunk in r.iter_raw():
         print(chunk.decode(), end='')

@@ -5,7 +5,9 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.responses import StreamingResponse
 
-from model_utils import load_model, ModelRequest, get_response, extract_text
+from src import ModelRequest
+from src.models import ModelPath
+from src.models.model_utils import load_model
 
 # Create a FastAPI application
 app = FastAPI(
@@ -19,9 +21,9 @@ config = configparser.ConfigParser()
 config.read(os.path.join(os.getcwd(), 'config.ini'))
 
 # Load the LLM model
-model_path = config.get('Model', 'path')
+model_name = config.get('Model', 'model_name')
 verbose = bool(config.get('ModelParams', 'verbose'))
-llm = load_model(path=model_path, kwargs={'verbose': verbose})
+llm = load_model(path=ModelPath[model_name], verbose=verbose)
 
 
 @app.post("/invoke/")
@@ -35,8 +37,7 @@ async def invoke(request: ModelRequest):
     Returns:
     str: The extracted text from the LLM response.
     """
-    output = get_response(llm, request)
-    return extract_text(output)
+    return llm(request)
 
 
 def get_response_generator(request: ModelRequest):
@@ -50,10 +51,10 @@ def get_response_generator(request: ModelRequest):
     Generator[str, None, None]: A generator yielding the extracted text from each LLM response event.
     """
     request.streaming = True
-    output_stream = get_response(llm, request)
+    output_stream = llm.get_response(request)
 
     for event in output_stream:
-        current_response = extract_text(event)
+        current_response = llm.extract_text(event)
         yield current_response
 
 
