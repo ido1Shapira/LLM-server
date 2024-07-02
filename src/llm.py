@@ -28,7 +28,7 @@ class LLM(ABC, BaseModel):
 
     def __init__(self, model_path: str, **kwargs):
         super().__init__()
-        self.llm = Llama(model_path, kwargs=kwargs)
+        self.llm = Llama(model_path, **kwargs)
         self.model_path = model_path
 
     @staticmethod

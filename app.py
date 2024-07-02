@@ -22,8 +22,12 @@ config.read(os.path.join(os.getcwd(), 'config.ini'))
 
 # Load the LLM model
 model_name = config.get('Model', 'model_name')
-verbose = bool(config.get('ModelParams', 'verbose'))
-llm = load_model(path=ModelPath[model_name], verbose=verbose)
+model_params = {
+    "verbose": bool(config.get('ModelParams', 'verbose')),
+    "n_ctx": int(config.get('ModelParams', 'n_ctx')),
+    "n_gpu_layers": int(config.get('ModelParams', 'n_gpu_layers'))
+}
+llm = load_model(path=ModelPath[model_name], params=model_params)
 
 
 @app.post("/invoke/")
