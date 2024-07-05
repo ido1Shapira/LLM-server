@@ -53,7 +53,7 @@ if is_using_langchain:
     # /stream_events
     add_routes(app, llm)
 else:
-    from server import server
+    from src.server import server
 
     server(app, llm)
 
