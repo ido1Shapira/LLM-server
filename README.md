@@ -32,34 +32,34 @@ header = {
 }
 
 params = {
-    "prompt": "what you can do?",
+    "input": "what you can do?",
     "max_new_tokens": 15,
     "temperature": 1.0
 }
 
-base_url = 'http://127.0.0.1:80/'
+base_url = 'http://localhost:80/'
 ```
 
 ### Use one of the 3 following api methods:
 1. `model/` - return the model path that have been loaded. You can change it in the `config.ini` file.
 ```python
 import httpx
-print(httpx.get(base_url + 'model/', headers=header).text)
+print(httpx.get(base_url + 'model', headers=header).text)
 
 ```
 2. `invoke/` - invoke llm response.
 
 ```python
 import httpx
-invoke_url = base_url + 'invoke/'
+invoke_url = base_url + 'invoke'
 print(httpx.post(invoke_url, json=params, headers=header).text)
 ```
 
 3. `stream/` - stream the llm response.
 ```python
 import httpx
-stream_url = base_url + 'stream/'
+stream_url = base_url + 'stream'
 with httpx.stream('POST', stream_url, json=params, headers=header) as r:
-    for chunk in r.iter_raw():
-        print(chunk.decode(), end='')
+    for chunk in r.iter_text():
+        print(chunk, end='')
 ```

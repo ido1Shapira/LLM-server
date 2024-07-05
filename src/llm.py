@@ -80,7 +80,7 @@ class LLM(ABC, BaseModel):
         If the streaming parameter in the ModelRequest is True, an iterator of CreateCompletionStreamResponse objects is returned.
         Otherwise, a single CreateCompletionResponse object is returned.
         """
-        prompt = self.get_prompt(params.prompt, params.system_prompt or self.DEFAULT_SYSTEM_PROMPT)
+        prompt = self.get_prompt(params.input, params.system_prompt or self.DEFAULT_SYSTEM_PROMPT)
         return self.llm(
             prompt=prompt,
             max_tokens=params.max_new_tokens,
